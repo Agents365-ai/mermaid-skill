@@ -1,31 +1,75 @@
-# mermaid-skill
+# creating-mermaid-diagrams
 
-用于在 Claude Code 中生成 Mermaid 图表并本地导出为 PNG/SVG/PDF 的 skill。
+Claude Code 技能：生成 Mermaid 图表并本地导出为 PNG/SVG/PDF。
 
 [English](README.md)
 
-## 功能说明
+## 为什么选择这个技能？
 
-- 根据自然语言描述生成 `.mmd` 文本文件
-- 使用 `mmdc` CLI（Mermaid CLI）将图表导出为 PNG、SVG 或 PDF
-- 支持 10+ 种图表类型：流程图、时序图、类图、ER 图、状态图、甘特图、饼图、Git 图、C4 架构图、思维导图
-- **无需手动定位** — 布局完全自动，无需指定坐标
-- 当图表有助于解释复杂系统时自动触发
+| 特性 | 本技能 | 其他 Mermaid 技能 | MCP 服务器 |
+|------|--------|------------------|------------|
+| **导出前验证** | ✓ 必须步骤 | 经常跳过 | 不一定 |
+| **渐进式加载** | ✓ 语法分离到独立文件 | 全部内联 | 不适用 |
+| **主动触发** | ✓ 3+组件自动触发 | 仅手动 | 仅手动 |
+| **中文支持** | ✓ 画图、架构图、流程图、时序图 | 仅英文 | 仅英文 |
+| **输入输出示例** | ✓ 3个完整示例 | 通常没有 | 没有 |
+| **本地导出** | ✓ 通过 mmdc 导出 PNG/SVG/PDF | 通常基于网页 | 网页预览 |
+| **无 API 依赖** | ✓ 完全离线 | 部分需要 API | 通常需要 API |
 
-## 依赖项
+**核心优势：**
+- **提前捕获错误** — 验证循环防止生成损坏的图表
+- **Token 高效** — 详细语法仅在需要时加载
+- **离线工作** — 无需外部服务
+- **双语支持** — 中英文关键词都能触发
 
-| 工具 | 用途 |
-|------|------|
-| `mmdc`（`@mermaid-js/mermaid-cli`）| CLI，用于将 `.mmd` 导出为 PNG/SVG/PDF |
+## 这个技能能做什么
 
-需要 Node.js 和 npm。
+### 图表类型（11+种）
 
-## 安装
+| 类型 | 用途 | 示例 |
+|------|------|------|
+| **流程图** | 流程、管道、决策树 | CI/CD 管道、用户注册流程 |
+| **时序图** | API 调用、认证流程 | JWT 认证、微服务通信 |
+| **类图** | OOP 模型、数据结构 | 领域模型、继承层次 |
+| **ER 图** | 数据库 Schema | 用户-订单-商品关系 |
+| **状态图** | 状态机、生命周期 | 订单状态、连接状态 |
+| **甘特图** | 项目时间线 | Sprint 规划、发布计划 |
+| **饼图** | 比例、分布 | 市场份额、资源分配 |
+| **Git 图** | 分支策略 | GitFlow、主干开发 |
+| **C4 上下文图** | 高级架构 | 系统上下文、容器图 |
+| **思维导图** | 主题分解 | 功能规划、头脑风暴 |
 
-### macOS / Windows / Linux
+### 输出格式
+
+- **PNG** — 高分辨率（2048px），白色背景，多种主题
+- **SVG** — 可缩放矢量图，适合文档
+- **PDF** — 可打印文档
+
+### 自动触发
+
+技能在以下情况自动激活：
+- 明确请求图表：*"创建流程图"*、*"画架构图"*
+- 解释复杂系统：*"认证是怎么工作的"*（3+组件）
+- 使用中文：*"画一个时序图"*、*"架构图"*
+
+## 如何使用这个技能
+
+### 1. 安装技能
 
 ```bash
-# 全局安装 mmdc
+# 克隆到 Claude Code 技能目录
+git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git ~/.claude/skills/creating-mermaid-diagrams
+```
+
+或者用于特定项目：
+```bash
+git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/skills/creating-mermaid-diagrams
+```
+
+### 2. 安装依赖
+
+```bash
+# 安装 Mermaid CLI
 npm install -g @mermaid-js/mermaid-cli
 
 # 验证安装
@@ -37,90 +81,60 @@ mmdc --version
 PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
 ```
 
-### 平台说明
+### 3. 开始使用
 
-| 平台 | 额外步骤 |
-|------|----------|
-| **macOS** | npm 安装后无需额外操作 |
-| **Windows** | npm 安装后无需额外操作 |
-| **Linux** | 无需额外操作（mmdc 内部处理无头 Chromium）|
-
-## 使用方式
-
-直接描述你想要的图表：
+在 Claude Code 中描述你想要的：
 
 ```
-画一个微服务电商架构图，包含 API Gateway，用户/订单/商品/支付服务，
-Kafka 事件总线，通知服务，以及各自独立的数据库
+创建一个用户认证的时序图，使用 JWT
 ```
 
-Claude 会自动生成 `.mmd` 文件并导出为 PNG。
+```
+画一个电商微服务架构图
+```
 
-## 示例
+```
+Draw an e-commerce microservices architecture
+```
+
+Claude 会：
+1. 生成 `.mmd` 源文件
+2. **验证语法**（在导出前捕获错误）
+3. 导出为 PNG/SVG/PDF
+4. 报告输出文件路径
+
+## 示例输出
 
 **提示词：**
-> 画一个微服务电商架构图，包含 Mobile/Web/Admin 客户端，API Gateway，
-> 用户/订单/商品/支付服务，Kafka 事件总线，通知服务，
-> 以及 User DB / Order DB / Product DB / Redis Cache / Stripe API
+> 创建一个微服务电商架构，包含 API 网关、各种服务和数据库
 
-**输出效果：**
+**生成结果：**
 
-![微服务架构图](assets/example.png)
+![微服务架构](assets/example.png)
 
-## 图表类型
+## 文件结构
 
-| 类型 | 关键词 | 适用场景 |
-|------|--------|----------|
-| 流程图（从上到下） | `flowchart TD` | 流程、决策树、数据管道 |
-| 流程图（从左到右） | `flowchart LR` | 数据流、横向管道 |
-| 时序图 | `sequenceDiagram` | API 调用、协议流、消息传递 |
-| 类图 | `classDiagram` | OOP 模型、数据结构 |
-| ER 图 | `erDiagram` | 数据库 Schema |
-| 状态图 | `stateDiagram-v2` | 状态机、生命周期 |
-| 甘特图 | `gantt` | 项目时间线 |
-| 饼图 | `pie` | 比例分布 |
-| Git 图 | `gitGraph` | 分支策略 |
-| C4 架构图 | `C4Context` | 高层架构概览 |
-| 思维导图 | `mindmap` | 主题拆解 |
+```
+creating-mermaid-diagrams/
+├── SKILL.md              # 主技能说明
+├── reference/
+│   ├── FLOWCHART.md      # 流程图语法和示例
+│   ├── SEQUENCE.md       # 时序图语法
+│   ├── CLASS-ER.md       # 类图和 ER 图语法
+│   └── OTHER-TYPES.md    # 状态图、甘特图、Git图、饼图、思维导图、C4
+├── assets/
+│   └── example.png
+├── README.md
+└── README_CN.md
+```
 
-## 文件说明
-
-- `SKILL.md` — Claude Code 加载的 skill 指令文件
-- `README.md` — 英文说明
-- `README_CN.md` — 本文件（中文）
-- `assets/` — 示例图表
-
-## 开源协议
+## 许可证
 
 MIT
-
-## 支持作者
-
-如果这个 skill 对你有帮助，欢迎支持作者：
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/wechat-pay.png" width="180" alt="微信支付">
-      <br>
-      <b>微信支付</b>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/alipay.png" width="180" alt="支付宝">
-      <br>
-      <b>支付宝</b>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/buymeacoffee.png" width="180" alt="Buy Me a Coffee">
-      <br>
-      <b>Buy Me a Coffee</b>
-    </td>
-  </tr>
-</table>
 
 ## 作者
 
 **Agents365-ai**
 
-- Bilibili: https://space.bilibili.com/441831884
 - GitHub: https://github.com/Agents365-ai
+- Bilibili: https://space.bilibili.com/441831884

@@ -1,34 +1,78 @@
-# mermaid-skill
+# creating-mermaid-diagrams
 
 Claude Code skill for generating Mermaid diagrams and exporting to PNG/SVG/PDF locally.
 
 [中文文档](README_CN.md)
 
-## What it does
+## Why This Skill?
 
-- Generates `.mmd` text files from natural language descriptions
-- Exports diagrams to PNG, SVG, or PDF using the `mmdc` CLI (Mermaid CLI)
-- Supports 10+ diagram types: flowchart, sequence, class, ER, state, Gantt, pie, gitGraph, C4, mindmap
-- **No manual positioning** — layout is fully automatic
-- Triggers automatically when diagrams would help explain complex systems
+| Feature | This Skill | Other Mermaid Skills | MCP Server |
+|---------|-----------|---------------------|------------|
+| **Validation before export** | ✓ Required step | Often skipped | Varies |
+| **Progressive disclosure** | ✓ Syntax in separate files | All inline | N/A |
+| **Proactive triggering** | ✓ Auto-triggers for 3+ components | Manual only | Manual |
+| **Chinese language support** | ✓ 画图, 架构图, 流程图, 时序图 | English only | English only |
+| **Input/output examples** | ✓ 3 complete examples | Usually none | None |
+| **Local export** | ✓ PNG/SVG/PDF via mmdc | Often web-based | Web preview |
+| **No API dependency** | ✓ Fully offline | Some need APIs | Often needs API |
 
-## Dependencies
+**Key advantages:**
+- **Catches errors early** — validation loop prevents broken diagrams
+- **Token efficient** — detailed syntax loaded only when needed
+- **Works offline** — no external services required
+- **Bilingual** — triggers on both English and Chinese keywords
 
-| Tool | Purpose |
-|------|---------|
-| `mmdc` (`@mermaid-js/mermaid-cli`) | CLI to export `.mmd` → PNG/SVG/PDF |
+## What This Skill Can Do
 
-Requires Node.js and npm.
+### Diagram Types (11+)
 
-## Install
+| Type | Use for | Example |
+|------|---------|---------|
+| **Flowchart** | Processes, pipelines, decision trees | CI/CD pipeline, user registration flow |
+| **Sequence** | API calls, authentication flows | JWT auth, microservice communication |
+| **Class** | OOP models, data structures | Domain models, inheritance hierarchies |
+| **ER** | Database schemas | User-Order-Product relationships |
+| **State** | State machines, lifecycles | Order status, connection states |
+| **Gantt** | Project timelines | Sprint planning, release schedules |
+| **Pie** | Proportions, distributions | Market share, resource allocation |
+| **Git Graph** | Branch strategies | GitFlow, trunk-based development |
+| **C4 Context** | High-level architecture | System context, container diagrams |
+| **Mind Map** | Topic breakdowns | Feature planning, brainstorming |
 
-### macOS / Windows / Linux
+### Output Formats
+
+- **PNG** — High resolution (2048px), white background, multiple themes
+- **SVG** — Scalable vector, perfect for docs
+- **PDF** — Print-ready documents
+
+### Automatic Triggering
+
+The skill activates when you:
+- Ask for diagrams explicitly: *"create a flowchart"*, *"draw architecture"*
+- Explain complex systems: *"how does authentication work"* (3+ components)
+- Use Chinese: *"画一个时序图"*, *"架构图"*
+
+## How to Use This Skill
+
+### 1. Install the Skill
 
 ```bash
-# Install mmdc globally
+# Clone to your Claude Code skills directory
+git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git ~/.claude/skills/creating-mermaid-diagrams
+```
+
+Or for project-specific use:
+```bash
+git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/skills/creating-mermaid-diagrams
+```
+
+### 2. Install Dependencies
+
+```bash
+# Install Mermaid CLI
 npm install -g @mermaid-js/mermaid-cli
 
-# Verify
+# Verify installation
 mmdc --version
 ```
 
@@ -37,89 +81,60 @@ If Chromium download fails:
 PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
 ```
 
-### Platform notes
+### 3. Use It
 
-| Platform | Extra step |
-|----------|------------|
-| **macOS** | No extra steps after npm install |
-| **Windows** | No extra steps after npm install |
-| **Linux** | No extra steps (mmdc handles headless Chromium internally) |
-
-## Usage
-
-Just describe what you want:
+Just describe what you want in Claude Code:
 
 ```
-Create a microservices e-commerce architecture with API Gateway, user/order/product/payment services,
-Kafka event bus, notification service, and separate databases for each service
+Create a sequence diagram for user authentication with JWT
 ```
 
-Claude will generate the `.mmd` file and export it to PNG automatically.
+```
+Draw an e-commerce microservices architecture
+```
 
-## Example
+```
+画一个订单状态流转图
+```
+
+Claude will:
+1. Generate `.mmd` source file
+2. **Validate syntax** (catches errors before export)
+3. Export to PNG/SVG/PDF
+4. Report output file paths
+
+## Example Output
 
 **Prompt:**
-> Create a microservices e-commerce architecture with Mobile/Web/Admin clients, API Gateway,
-> User/Order/Product/Payment services, Kafka Event Bus, Notification service,
-> and User DB / Order DB / Product DB / Redis Cache / Stripe API
+> Create a microservices e-commerce architecture with API Gateway, services, and databases
 
-**Output:**
+**Generated:**
 
 ![Microservices Architecture](assets/example.png)
 
-## Diagram Types
+## File Structure
 
-| Type | Keyword | Use for |
-|------|---------|---------|
-| Flowchart | `flowchart TD` / `flowchart LR` | processes, decision trees, pipelines |
-| Sequence | `sequenceDiagram` | API calls, protocol flows, message passing |
-| Class | `classDiagram` | OOP models, data structures |
-| ER | `erDiagram` | database schemas |
-| State | `stateDiagram-v2` | state machines, lifecycle |
-| Gantt | `gantt` | project timelines |
-| Pie | `pie` | proportions, distributions |
-| Git Graph | `gitGraph` | branch strategies |
-| C4 Context | `C4Context` | high-level architecture |
-| Mind Map | `mindmap` | topic breakdowns |
-
-## Files
-
-- `SKILL.md` — skill instructions loaded by Claude Code
-- `README.md` — this file (English)
-- `README_CN.md` — Chinese documentation
-- `assets/` — example diagrams
+```
+creating-mermaid-diagrams/
+├── SKILL.md              # Main skill instructions
+├── reference/
+│   ├── FLOWCHART.md      # Flowchart syntax & examples
+│   ├── SEQUENCE.md       # Sequence diagram syntax
+│   ├── CLASS-ER.md       # Class & ER diagram syntax
+│   └── OTHER-TYPES.md    # State, Gantt, Git, Pie, Mindmap, C4
+├── assets/
+│   └── example.png
+├── README.md
+└── README_CN.md
+```
 
 ## License
 
 MIT
 
-## Support
-
-If this skill helps you, consider supporting the author:
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/wechat-pay.png" width="180" alt="WeChat Pay">
-      <br>
-      <b>WeChat Pay</b>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/alipay.png" width="180" alt="Alipay">
-      <br>
-      <b>Alipay</b>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/buymeacoffee.png" width="180" alt="Buy Me a Coffee">
-      <br>
-      <b>Buy Me a Coffee</b>
-    </td>
-  </tr>
-</table>
-
 ## Author
 
 **Agents365-ai**
 
-- Bilibili: https://space.bilibili.com/441831884
 - GitHub: https://github.com/Agents365-ai
+- Bilibili: https://space.bilibili.com/441831884
