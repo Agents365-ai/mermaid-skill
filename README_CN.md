@@ -118,25 +118,26 @@ Claude 会：
 
 ```mermaid
 flowchart TD
-  Start([用户请求图表]) --> CheckDeps{检查依赖}
-
-  CheckDeps -->|mmdc 可用| UseMmdc[使用 mmdc 本地导出]
-  CheckDeps -->|mmdc 不可用| UseKroki[使用 Kroki API]
-
+  Start([用户请求图表]):::input --> CheckDeps{检查依赖}:::decision
+  CheckDeps -->|mmdc 可用| UseMmdc[使用 mmdc 本地导出]:::process
+  CheckDeps -->|mmdc 不可用| UseKroki[使用 Kroki API]:::process
   UseMmdc --> PickType
   UseKroki --> PickType
-
-  PickType[选择图表类型] --> Generate[生成 .mmd 文件]
-
-  Generate --> Validate{验证语法}
-
-  Validate -->|错误| Fix[修复 .mmd 文件]
+  PickType[选择图表类型]:::process --> Generate[生成 .mmd 文件]:::process
+  Generate --> Validate{验证语法}:::decision
+  Validate -->|错误| Fix[修复 .mmd 文件]:::warning
   Fix --> Validate
+  Validate -->|通过| Export[导出 PNG/SVG/PDF]:::process
+  Export --> Report([报告输出路径]):::output
 
-  Validate -->|通过| Export[导出 PNG/SVG/PDF]
-
-  Export --> Report([报告输出路径])
+  classDef input fill:#d4edda,stroke:#28a745,color:#155724
+  classDef process fill:#cce5ff,stroke:#007bff,color:#004085
+  classDef decision fill:#fff3cd,stroke:#ffc107,color:#856404
+  classDef warning fill:#f8d7da,stroke:#dc3545,color:#721c24
+  classDef output fill:#e2d5f1,stroke:#6f42c1,color:#4a235a
 ```
+
+**颜色图例：** 🟢 输入 | 🔵 处理 | 🟡 决策 | 🔴 警告 | 🟣 输出
 
 </details>
 
