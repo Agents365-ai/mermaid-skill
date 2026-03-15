@@ -162,8 +162,10 @@ creating-mermaid-diagrams/
 ├── assets/
 │   ├── example.mmd       # Example: microservices architecture
 │   ├── example.png
-│   ├── workflow.mmd      # Example: this skill's workflow
-│   └── workflow.png
+│   ├── workflow.mmd      # Example: workflow (English)
+│   ├── workflow.png
+│   ├── workflow_cn.mmd   # Example: workflow (Chinese)
+│   └── workflow_cn.png
 ├── README.md
 └── README_CN.md
 ```

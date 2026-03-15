@@ -111,31 +111,31 @@ Claude 会：
 
 本技能采用验证优先的工作流：
 
-![技能工作流](assets/workflow.png)
+![技能工作流](assets/workflow_cn.png)
 
 <details>
 <summary>查看 Mermaid 源码</summary>
 
 ```mermaid
 flowchart TD
-  Start([User requests diagram]) --> CheckDeps{Check deps}
+  Start([用户请求图表]) --> CheckDeps{检查依赖}
 
-  CheckDeps -->|mmdc available| UseMmdc[Use mmdc locally]
-  CheckDeps -->|mmdc unavailable| UseKroki[Use Kroki API]
+  CheckDeps -->|mmdc 可用| UseMmdc[使用 mmdc 本地导出]
+  CheckDeps -->|mmdc 不可用| UseKroki[使用 Kroki API]
 
   UseMmdc --> PickType
   UseKroki --> PickType
 
-  PickType[Pick diagram type] --> Generate[Generate .mmd file]
+  PickType[选择图表类型] --> Generate[生成 .mmd 文件]
 
-  Generate --> Validate{Validate syntax}
+  Generate --> Validate{验证语法}
 
-  Validate -->|Error| Fix[Fix .mmd file]
+  Validate -->|错误| Fix[修复 .mmd 文件]
   Fix --> Validate
 
-  Validate -->|Pass| Export[Export PNG/SVG/PDF]
+  Validate -->|通过| Export[导出 PNG/SVG/PDF]
 
-  Export --> Report([Report output paths])
+  Export --> Report([报告输出路径])
 ```
 
 </details>
@@ -162,8 +162,10 @@ creating-mermaid-diagrams/
 ├── assets/
 │   ├── example.mmd       # 示例：微服务架构
 │   ├── example.png
-│   ├── workflow.mmd      # 示例：本技能的工作流
-│   └── workflow.png
+│   ├── workflow.mmd      # 示例：工作流（英文）
+│   ├── workflow.png
+│   ├── workflow_cn.mmd   # 示例：工作流（中文）
+│   └── workflow_cn.png
 ├── README.md
 └── README_CN.md
 ```
