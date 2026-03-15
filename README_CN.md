@@ -107,6 +107,39 @@ Claude 会：
 3. 导出为 PNG/SVG/PDF
 4. 报告输出文件路径
 
+## 工作流程
+
+本技能采用验证优先的工作流：
+
+![技能工作流](assets/workflow.png)
+
+<details>
+<summary>查看 Mermaid 源码</summary>
+
+```mermaid
+flowchart TD
+  Start([User requests diagram]) --> CheckDeps{Check deps}
+
+  CheckDeps -->|mmdc available| UseMmdc[Use mmdc locally]
+  CheckDeps -->|mmdc unavailable| UseKroki[Use Kroki API]
+
+  UseMmdc --> PickType
+  UseKroki --> PickType
+
+  PickType[Pick diagram type] --> Generate[Generate .mmd file]
+
+  Generate --> Validate{Validate syntax}
+
+  Validate -->|Error| Fix[Fix .mmd file]
+  Fix --> Validate
+
+  Validate -->|Pass| Export[Export PNG/SVG/PDF]
+
+  Export --> Report([Report output paths])
+```
+
+</details>
+
 ## 示例输出
 
 **提示词：**
@@ -127,7 +160,10 @@ creating-mermaid-diagrams/
 │   ├── CLASS-ER.md       # 类图和 ER 图语法
 │   └── OTHER-TYPES.md    # 状态图、甘特图、Git图、饼图、思维导图、C4
 ├── assets/
-│   └── example.png
+│   ├── example.mmd       # 示例：微服务架构
+│   ├── example.png
+│   ├── workflow.mmd      # 示例：本技能的工作流
+│   └── workflow.png
 ├── README.md
 └── README_CN.md
 ```

@@ -107,6 +107,39 @@ Claude will:
 3. Export to PNG/SVG/PDF
 4. Report output file paths
 
+## How It Works
+
+This skill follows a validation-first workflow:
+
+![Skill Workflow](assets/workflow.png)
+
+<details>
+<summary>View Mermaid source</summary>
+
+```mermaid
+flowchart TD
+  Start([User requests diagram]) --> CheckDeps{Check deps}
+
+  CheckDeps -->|mmdc available| UseMmdc[Use mmdc locally]
+  CheckDeps -->|mmdc unavailable| UseKroki[Use Kroki API]
+
+  UseMmdc --> PickType
+  UseKroki --> PickType
+
+  PickType[Pick diagram type] --> Generate[Generate .mmd file]
+
+  Generate --> Validate{Validate syntax}
+
+  Validate -->|Error| Fix[Fix .mmd file]
+  Fix --> Validate
+
+  Validate -->|Pass| Export[Export PNG/SVG/PDF]
+
+  Export --> Report([Report output paths])
+```
+
+</details>
+
 ## Example Output
 
 **Prompt:**
@@ -127,7 +160,10 @@ creating-mermaid-diagrams/
 │   ├── CLASS-ER.md       # Class & ER diagram syntax
 │   └── OTHER-TYPES.md    # State, Gantt, Git, Pie, Mindmap, C4
 ├── assets/
-│   └── example.png
+│   ├── example.mmd       # Example: microservices architecture
+│   ├── example.png
+│   ├── workflow.mmd      # Example: this skill's workflow
+│   └── workflow.png
 ├── README.md
 └── README_CN.md
 ```

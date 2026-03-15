@@ -1,0 +1,19 @@
+flowchart TD
+  Start([User requests diagram]) --> CheckDeps{Check deps}
+
+  CheckDeps -->|mmdc available| UseMmdc[Use mmdc locally]
+  CheckDeps -->|mmdc unavailable| UseKroki[Use Kroki API]
+
+  UseMmdc --> PickType
+  UseKroki --> PickType
+
+  PickType[Pick diagram type] --> Generate[Generate .mmd file]
+
+  Generate --> Validate{Validate syntax}
+
+  Validate -->|Error| Fix[Fix .mmd file]
+  Fix --> Validate
+
+  Validate -->|Pass| Export[Export PNG/SVG/PDF]
+
+  Export --> Report([Report output paths])
