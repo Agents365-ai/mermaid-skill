@@ -1,33 +1,34 @@
 ---
 name: creating-mermaid-diagrams
-description: Generate Mermaid diagrams (.mmd) and export to PNG/SVG/PDF locally using mmdc CLI. USE THIS SKILL when user mentions diagram, flowchart, sequence diagram, class diagram, ER diagram, state machine, architecture, visualize, git graph, 画图, 架构图, 流程图, 时序图. PROACTIVELY USE when explaining ANY system with 3+ components, API flows, authentication sequences, class hierarchies, database schemas, or state machines. Supports 11+ diagram types with fully automatic layout.
+description: Generate Mermaid diagrams (.mmd) and export to PNG/SVG/PDF using mmdc CLI or Kroki API. USE THIS SKILL when user mentions diagram, flowchart, sequence diagram, class diagram, ER diagram, state machine, architecture, visualize, git graph, 画图, 架构图, 流程图, 时序图. PROACTIVELY USE when explaining ANY system with 3+ components, API flows, authentication sequences, class hierarchies, database schemas, or state machines. Supports 11+ diagram types with fully automatic layout.
 ---
 
 # Mermaid Diagrams
 
-Generate `.mmd` text files and export to PNG/SVG/PDF locally using `mmdc` (Mermaid CLI).
+Generate `.mmd` text files and export to PNG/SVG/PDF using `mmdc` (local) or Kroki API (no install).
 
 **Key advantage:** Text-based syntax with **fully automatic layout** — no x/y coordinates needed.
 
 ## Prerequisites
 
+**Option A: Local (mmdc)**
 ```bash
 npm install -g @mermaid-js/mermaid-cli
 mmdc --version
 ```
 
-If Chromium download fails:
+**Option B: Kroki API (no install)**
 ```bash
-PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
+curl --version  # Just need curl
 ```
 
 ## Workflow
 
-1. **Check deps** — verify `mmdc --version` succeeds
+1. **Check deps** — try `mmdc --version`, fallback to Kroki if unavailable
 2. **Pick diagram type** — choose from table below
 3. **Generate** — write `.mmd` file to disk
 4. **Validate** — run validation (REQUIRED before export)
-5. **Export** — run `mmdc` to produce PNG/SVG/PDF
+5. **Export** — use `mmdc` or Kroki API to produce PNG/SVG/PDF
 6. **Report** — tell user the output file paths
 
 ## Validation (Required)
@@ -35,8 +36,11 @@ PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
 **NEVER export a diagram without validating first.**
 
 ```bash
-# Validate syntax (dry run)
+# Validate with mmdc (local)
 mmdc -i diagram.mmd -o /tmp/test.png 2>&1
+
+# Validate with Kroki (if mmdc unavailable)
+curl -s -X POST -H "Content-Type: text/plain" --data-binary @diagram.mmd https://kroki.io/mermaid/svg -o /tmp/test.svg && echo "Valid" || echo "Invalid"
 
 # If error, fix the .mmd file and validate again
 # Only proceed to export after validation passes
@@ -159,6 +163,10 @@ stateDiagram-v2
 
 ## Export Commands
 
+### Option 1: Local Export (mmdc)
+
+Requires `mmdc` installed locally. Best for offline use.
+
 ```bash
 # PNG (recommended: 2048px wide, white background)
 mmdc -i diagram.mmd -o diagram.png -w 2048 --backgroundColor white
@@ -172,6 +180,31 @@ mmdc -i diagram.mmd -o diagram.svg
 # PDF
 mmdc -i diagram.mmd -o diagram.pdf
 ```
+
+### Option 2: Kroki API (No Install Required)
+
+Use [Kroki](https://kroki.io) when `mmdc` is not available. No local dependencies needed.
+
+```bash
+# SVG via Kroki
+curl -X POST -H "Content-Type: text/plain" --data-binary @diagram.mmd https://kroki.io/mermaid/svg -o diagram.svg
+
+# PNG via Kroki
+curl -X POST -H "Content-Type: text/plain" --data-binary @diagram.mmd https://kroki.io/mermaid/png -o diagram.png
+
+# PDF via Kroki
+curl -X POST -H "Content-Type: text/plain" --data-binary @diagram.mmd https://kroki.io/mermaid/pdf -o diagram.pdf
+```
+
+**Kroki advantages:**
+- No local installation required
+- Works on any system with `curl`
+- Supports 20+ diagram types (PlantUML, GraphViz, D2, etc.)
+
+**When to use Kroki:**
+- `mmdc` installation fails
+- Quick one-off diagrams
+- CI/CD pipelines without Node.js
 
 ## Common Mistakes
 

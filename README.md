@@ -1,6 +1,6 @@
 # creating-mermaid-diagrams
 
-Claude Code skill for generating Mermaid diagrams and exporting to PNG/SVG/PDF locally.
+Claude Code skill for generating Mermaid diagrams and exporting to PNG/SVG/PDF.
 
 [中文文档](README_CN.md)
 
@@ -13,13 +13,13 @@ Claude Code skill for generating Mermaid diagrams and exporting to PNG/SVG/PDF l
 | **Proactive triggering** | ✓ Auto-triggers for 3+ components | Manual only | Manual |
 | **Chinese language support** | ✓ 画图, 架构图, 流程图, 时序图 | English only | English only |
 | **Input/output examples** | ✓ 3 complete examples | Usually none | None |
-| **Local export** | ✓ PNG/SVG/PDF via mmdc | Often web-based | Web preview |
-| **No API dependency** | ✓ Fully offline | Some need APIs | Often needs API |
+| **Dual export options** | ✓ mmdc (local) + Kroki (API) | Usually one method | Web only |
+| **Zero-install fallback** | ✓ Kroki needs only curl | Requires install | Requires setup |
 
 **Key advantages:**
 - **Catches errors early** — validation loop prevents broken diagrams
 - **Token efficient** — detailed syntax loaded only when needed
-- **Works offline** — no external services required
+- **Flexible export** — local mmdc or Kroki API (no install needed)
 - **Bilingual** — triggers on both English and Chinese keywords
 
 ## What This Skill Can Do
@@ -68,18 +68,22 @@ git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/
 
 ### 2. Install Dependencies
 
+**Option A: Local Export (mmdc)**
 ```bash
-# Install Mermaid CLI
 npm install -g @mermaid-js/mermaid-cli
-
-# Verify installation
 mmdc --version
 ```
 
-If Chromium download fails:
+**Option B: Kroki API (no install)**
 ```bash
-PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
+# Just need curl - no installation required!
+curl --version
 ```
+
+Use Kroki when:
+- `mmdc` installation fails (Chromium issues)
+- Running in CI/CD without Node.js
+- Quick one-off diagrams
 
 ### 3. Use It
 
@@ -127,6 +131,30 @@ creating-mermaid-diagrams/
 ├── README.md
 └── README_CN.md
 ```
+
+## Support
+
+If this skill helps you, consider supporting the author:
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/wechat-pay.png" width="180" alt="WeChat Pay">
+      <br>
+      <b>WeChat Pay</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/alipay.png" width="180" alt="Alipay">
+      <br>
+      <b>Alipay</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/buymeacoffee.png" width="180" alt="Buy Me a Coffee">
+      <br>
+      <b>Buy Me a Coffee</b>
+    </td>
+  </tr>
+</table>
 
 ## License
 

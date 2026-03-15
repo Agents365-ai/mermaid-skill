@@ -1,6 +1,6 @@
 # creating-mermaid-diagrams
 
-Claude Code 技能：生成 Mermaid 图表并本地导出为 PNG/SVG/PDF。
+Claude Code 技能：生成 Mermaid 图表并导出为 PNG/SVG/PDF。
 
 [English](README.md)
 
@@ -13,13 +13,13 @@ Claude Code 技能：生成 Mermaid 图表并本地导出为 PNG/SVG/PDF。
 | **主动触发** | ✓ 3+组件自动触发 | 仅手动 | 仅手动 |
 | **中文支持** | ✓ 画图、架构图、流程图、时序图 | 仅英文 | 仅英文 |
 | **输入输出示例** | ✓ 3个完整示例 | 通常没有 | 没有 |
-| **本地导出** | ✓ 通过 mmdc 导出 PNG/SVG/PDF | 通常基于网页 | 网页预览 |
-| **无 API 依赖** | ✓ 完全离线 | 部分需要 API | 通常需要 API |
+| **双重导出方式** | ✓ mmdc（本地）+ Kroki（API） | 通常只有一种 | 仅网页 |
+| **零安装备选** | ✓ Kroki 只需 curl | 需要安装 | 需要配置 |
 
 **核心优势：**
 - **提前捕获错误** — 验证循环防止生成损坏的图表
 - **Token 高效** — 详细语法仅在需要时加载
-- **离线工作** — 无需外部服务
+- **灵活导出** — 本地 mmdc 或 Kroki API（无需安装）
 - **双语支持** — 中英文关键词都能触发
 
 ## 这个技能能做什么
@@ -68,18 +68,22 @@ git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/
 
 ### 2. 安装依赖
 
+**方式 A：本地导出（mmdc）**
 ```bash
-# 安装 Mermaid CLI
 npm install -g @mermaid-js/mermaid-cli
-
-# 验证安装
 mmdc --version
 ```
 
-如果 Chromium 下载失败：
+**方式 B：Kroki API（无需安装）**
 ```bash
-PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
+# 只需要 curl，无需安装任何东西！
+curl --version
 ```
+
+使用 Kroki 的场景：
+- `mmdc` 安装失败（Chromium 问题）
+- CI/CD 环境没有 Node.js
+- 快速生成单个图表
 
 ### 3. 开始使用
 
@@ -127,6 +131,30 @@ creating-mermaid-diagrams/
 ├── README.md
 └── README_CN.md
 ```
+
+## 支持作者
+
+如果这个技能对你有帮助，欢迎支持作者：
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/wechat-pay.png" width="180" alt="微信支付">
+      <br>
+      <b>微信支付</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/alipay.png" width="180" alt="支付宝">
+      <br>
+      <b>支付宝</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/buymeacoffee.png" width="180" alt="Buy Me a Coffee">
+      <br>
+      <b>Buy Me a Coffee</b>
+    </td>
+  </tr>
+</table>
 
 ## 许可证
 
