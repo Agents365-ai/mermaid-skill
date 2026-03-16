@@ -6,21 +6,22 @@ Claude Code skill for generating Mermaid diagrams and exporting to PNG/SVG/PDF.
 
 ## Why This Skill?
 
-| Feature | This Skill | Other Mermaid Skills | MCP Server |
-|---------|-----------|---------------------|------------|
-| **Validation before export** | ✓ Required step | Often skipped | Varies |
-| **Progressive disclosure** | ✓ Syntax in separate files | All inline | N/A |
-| **Proactive triggering** | ✓ Auto-triggers for 3+ components | Manual only | Manual |
-| **Chinese language support** | ✓ 画图, 架构图, 流程图, 时序图 | English only | English only |
-| **Input/output examples** | ✓ 3 complete examples | Usually none | None |
-| **Dual export options** | ✓ mmdc (local) + Kroki (API) | Usually one method | Web only |
-| **Zero-install fallback** | ✓ Kroki needs only curl | Requires install | Requires setup |
+| Feature | This Skill | Native Claude Code | Other Skills | MCP Server |
+|---------|-----------|-------------------|--------------|------------|
+| **Write Mermaid syntax** | ✓ Guided by examples | ✓ Built-in capability | ✓ Varies | ✓ Varies |
+| **Validation before export** | ✓ Required step | ✗ No validation loop | Often skipped | Varies |
+| **Export to PNG/SVG/PDF** | ✓ Automatic | ✗ Manual — user must ask | Usually one method | Web only |
+| **Zero-install fallback** | ✓ Kroki needs only curl | ✗ No fallback | Requires install | Requires setup |
+| **Proactive triggering** | ✓ Auto-triggers for 3+ components | ✗ Only when explicitly asked | Manual only | Manual |
+| **Chinese language support** | ✓ 画图, 架构图, 流程图, 时序图 | ✗ No keyword triggers | English only | English only |
+| **End-to-end workflow** | ✓ Generate → Validate → Export → Report | ✗ Generate only | Partial | Partial |
+| **Progressive disclosure** | ✓ Syntax in separate files | N/A | All inline | N/A |
 
-**Key advantages:**
-- **Catches errors early** — validation loop prevents broken diagrams
-- **Token efficient** — detailed syntax loaded only when needed
-- **Flexible export** — local mmdc or Kroki API (no install needed)
-- **Bilingual** — triggers on both English and Chinese keywords
+**Key advantages over native Claude Code:**
+- **Complete pipeline** — Claude Code can write Mermaid, but stops at `.mmd`. This skill adds validation, export, and error recovery automatically
+- **Catches errors early** — validation loop prevents broken diagrams from being exported
+- **Flexible export** — local mmdc or Kroki API fallback (no install needed)
+- **Proactive diagramming** — auto-triggers when discussing architecture, not just when you ask for a diagram
 
 ## What This Skill Can Do
 
