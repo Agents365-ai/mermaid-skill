@@ -1,135 +1,131 @@
-# creating-mermaid-diagrams
+# Mermaid 图表技能
 
-Claude Code skill for generating Mermaid diagrams and exporting to PNG/SVG/PDF.
+一键生成 Mermaid 图表并自动导出为 PNG/SVG/PDF 的 Claude Code 技能。
 
-[中文文档](README_CN.md)
+[English](README_EN.md)
 
-## Why This Skill?
+## 为什么选择这个技能？
 
-| Feature | This Skill | Native Claude Code | Other Skills | MCP Server |
-|---------|-----------|-------------------|--------------|------------|
-| **Write Mermaid syntax** | ✓ Guided by examples | ✓ Built-in capability | ✓ Varies | ✓ Varies |
-| **Validation before export** | ✓ Required step | ✗ No validation loop | Often skipped | Varies |
-| **Export to PNG/SVG/PDF** | ✓ Automatic | ✗ Manual — user must ask | Usually one method | Web only |
-| **Zero-install fallback** | ✓ Kroki needs only curl | ✗ No fallback | Requires install | Requires setup |
-| **Proactive triggering** | ✓ Auto-triggers for 3+ components | ✗ Only when explicitly asked | Manual only | Manual |
-| **Chinese language support** | ✓ 画图, 架构图, 流程图, 时序图 | ✗ No keyword triggers | English only | English only |
-| **End-to-end workflow** | ✓ Generate → Validate → Export → Report | ✗ Generate only | Partial | Partial |
-| **Progressive disclosure** | ✓ Syntax in separate files | N/A | All inline | N/A |
+| 特性 | 本技能 | 原生 Claude Code | 其他技能 | MCP 服务器 |
+|------|--------|-----------------|----------|------------|
+| **编写 Mermaid 语法** | ✓ 有示例引导 | ✓ 内置能力 | ✓ 不一定 | ✓ 不一定 |
+| **导出前验证** | ✓ 必须步骤 | ✗ 无验证环节 | 经常跳过 | 不一定 |
+| **导出 PNG/SVG/PDF** | ✓ 自动完成 | ✗ 需手动要求 | 通常只有一种 | 仅网页 |
+| **零安装备选** | ✓ Kroki 只需 curl | ✗ 无备选方案 | 需要安装 | 需要配置 |
+| **主动触发** | ✓ 3+组件自动触发 | ✗ 仅在明确要求时 | 仅手动 | 仅手动 |
+| **中文支持** | ✓ 画图、架构图、流程图、时序图 | ✗ 无关键词触发 | 仅英文 | 仅英文 |
+| **端到端工作流** | ✓ 生成→验证→导出→报告 | ✗ 仅生成代码 | 部分支持 | 部分支持 |
+| **渐进式加载** | ✓ 语法分离到独立文件 | 不适用 | 全部内联 | 不适用 |
 
-**Key advantages over native Claude Code:**
-- **Complete pipeline** — Claude Code can write Mermaid, but stops at `.mmd`. This skill adds validation, export, and error recovery automatically
-- **Catches errors early** — validation loop prevents broken diagrams from being exported
-- **Flexible export** — local mmdc or Kroki API fallback (no install needed)
-- **Proactive diagramming** — auto-triggers when discussing architecture, not just when you ask for a diagram
+**相比原生 Claude Code 的核心优势：**
+- **完整管道** — Claude Code 能写 Mermaid 代码，但止步于 `.mmd` 文件。本技能自动完成验证、导出和错误恢复
+- **提前捕获错误** — 验证循环防止导出损坏的图表
+- **灵活导出** — 本地 mmdc 或 Kroki API 备选（无需安装）
+- **主动画图** — 讨论架构时自动触发，不需要你专门要求"画个图"
 
-## What This Skill Can Do
+## 这个技能能做什么
 
-### Diagram Types (11+)
+### 图表类型（11+种）
 
-| Type | Use for | Example |
-|------|---------|---------|
-| **Flowchart** | Processes, pipelines, decision trees | CI/CD pipeline, user registration flow |
-| **Sequence** | API calls, authentication flows | JWT auth, microservice communication |
-| **Class** | OOP models, data structures | Domain models, inheritance hierarchies |
-| **ER** | Database schemas | User-Order-Product relationships |
-| **State** | State machines, lifecycles | Order status, connection states |
-| **Gantt** | Project timelines | Sprint planning, release schedules |
-| **Pie** | Proportions, distributions | Market share, resource allocation |
-| **Git Graph** | Branch strategies | GitFlow, trunk-based development |
-| **C4 Context** | High-level architecture | System context, container diagrams |
-| **Mind Map** | Topic breakdowns | Feature planning, brainstorming |
+| 类型 | 用途 | 示例 |
+|------|------|------|
+| **流程图** | 流程、管道、决策树 | CI/CD 管道、用户注册流程 |
+| **时序图** | API 调用、认证流程 | JWT 认证、微服务通信 |
+| **类图** | OOP 模型、数据结构 | 领域模型、继承层次 |
+| **ER 图** | 数据库模式 | 用户-订单-商品关系 |
+| **状态图** | 状态机、生命周期 | 订单状态、连接状态 |
+| **甘特图** | 项目时间线 | 迭代规划、发布计划 |
+| **饼图** | 比例、分布 | 市场份额、资源分配 |
+| **Git 图** | 分支策略 | 分支模型、主干开发 |
+| **C4 上下文图** | 高级架构 | 系统上下文、容器图 |
+| **思维导图** | 主题分解 | 功能规划、头脑风暴 |
 
-### Output Formats
+### 输出格式
 
-- **PNG** — High resolution (2048px), white background, multiple themes
-- **SVG** — Scalable vector, perfect for docs
-- **PDF** — Print-ready documents
+- **PNG** — 高分辨率（2048px），白色背景，多种主题
+- **SVG** — 可缩放矢量图，适合文档
+- **PDF** — 可打印文档
 
-### Automatic Triggering
+### 自动触发
 
-The skill activates when you:
-- Ask for diagrams explicitly: *"create a flowchart"*, *"draw architecture"*
-- Explain complex systems: *"how does authentication work"* (3+ components)
-- Use Chinese: *"画一个时序图"*, *"架构图"*
+技能在以下情况自动激活：
+- 明确请求图表：*"创建流程图"*、*"画架构图"*
+- 解释复杂系统：*"认证是怎么工作的"*（3+组件）
+- 使用中文：*"画一个时序图"*、*"架构图"*
 
-## How to Use This Skill
+## 如何使用这个技能
 
-### 1. Install the Skill
+### 1. 安装技能
 
 ```bash
-# Clone to your Claude Code skills directory
+# 克隆到 Claude Code 技能目录
 git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git ~/.claude/skills/creating-mermaid-diagrams
 ```
 
-Or for project-specific use:
+或者用于特定项目：
 ```bash
 git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/skills/creating-mermaid-diagrams
 ```
 
-### 2. Install Dependencies
+### 2. 安装依赖
 
-**Option A: Local Export (mmdc)**
+**方式 A：本地导出（mmdc）**
 ```bash
 npm install -g @mermaid-js/mermaid-cli
 mmdc --version
 ```
 
-**Option B: Kroki API (no install)**
+**方式 B：Kroki API（无需安装）**
 ```bash
-# Just need curl - no installation required!
+# 只需要 curl，无需安装任何东西！
 curl --version
 ```
 
-Use Kroki when:
-- `mmdc` installation fails (Chromium issues)
-- Running in CI/CD without Node.js
-- Quick one-off diagrams
+使用 Kroki 的场景：
+- `mmdc` 安装失败（Chromium 依赖问题）
+- 持续集成环境没有 Node.js
+- 快速生成单个图表
 
-### 3. Use It
+### 3. 开始使用
 
-Just describe what you want in Claude Code:
-
-```
-Create a sequence diagram for user authentication with JWT
-```
+在 Claude Code 中描述你想要的：
 
 ```
-Draw an e-commerce microservices architecture
+创建一个用户认证的时序图，使用 JWT
 ```
 
 ```
-画一个订单状态流转图
+画一个电商微服务架构图
 ```
 
-Claude will:
-1. Generate `.mmd` source file
-2. **Validate syntax** (catches errors before export)
-3. Export to PNG/SVG/PDF
-4. Report output file paths
+Claude 会：
+1. 生成 `.mmd` 源文件
+2. **验证语法**（在导出前捕获错误）
+3. 导出为 PNG/SVG/PDF
+4. 报告输出文件路径
 
-## How It Works
+## 工作流程
 
-This skill follows a validation-first workflow:
+本技能采用验证优先的工作流：
 
-![Skill Workflow](assets/workflow.png)
+![技能工作流](assets/workflow_cn.png)
 
 <details>
-<summary>View Mermaid source</summary>
+<summary>查看 Mermaid 源码</summary>
 
 ```mermaid
 flowchart TD
-  Start([User requests diagram]):::input --> CheckDeps{Check deps}:::decision
-  CheckDeps -->|mmdc available| UseMmdc[Use mmdc locally]:::process
-  CheckDeps -->|mmdc unavailable| UseKroki[Use Kroki API]:::process
+  Start([用户请求图表]):::input --> CheckDeps{检查依赖}:::decision
+  CheckDeps -->|mmdc 可用| UseMmdc[使用 mmdc 本地导出]:::process
+  CheckDeps -->|mmdc 不可用| UseKroki[使用 Kroki API]:::process
   UseMmdc --> PickType
   UseKroki --> PickType
-  PickType[Pick diagram type]:::process --> Generate[Generate .mmd file]:::process
-  Generate --> Validate{Validate syntax}:::decision
-  Validate -->|Error| Fix[Fix .mmd file]:::warning
+  PickType[选择图表类型]:::process --> Generate[生成 .mmd 文件]:::process
+  Generate --> Validate{验证语法}:::decision
+  Validate -->|错误| Fix[修复 .mmd 文件]:::warning
   Fix --> Validate
-  Validate -->|Pass| Export[Export PNG/SVG/PDF]:::process
-  Export --> Report([Report output paths]):::output
+  Validate -->|通过| Export[导出 PNG/SVG/PDF]:::process
+  Export --> Report([报告输出路径]):::output
 
   classDef input fill:#d4edda,stroke:#28a745,color:#155724
   classDef process fill:#cce5ff,stroke:#007bff,color:#004085
@@ -138,55 +134,55 @@ flowchart TD
   classDef output fill:#e2d5f1,stroke:#6f42c1,color:#4a235a
 ```
 
-**Color legend:** 🟢 Input | 🔵 Process | 🟡 Decision | 🔴 Warning | 🟣 Output
+**颜色图例：** 🟢 输入 | 🔵 处理 | 🟡 决策 | 🔴 警告 | 🟣 输出
 
 </details>
 
-## Example Output
+## 示例输出
 
-**Prompt:**
-> Create a microservices e-commerce architecture with API Gateway, services, and databases
+**提示词：**
+> 创建一个微服务电商架构，包含 API 网关、各种服务和数据库
 
-**Generated:**
+**生成结果：**
 
-![Microservices Architecture](assets/example.png)
+![微服务架构](assets/example.png)
 
-## File Structure
+## 文件结构
 
 ```
 creating-mermaid-diagrams/
-├── SKILL.md              # Main skill instructions
+├── SKILL.md              # 主技能说明
 ├── reference/
-│   ├── FLOWCHART.md      # Flowchart syntax & examples
-│   ├── SEQUENCE.md       # Sequence diagram syntax
-│   ├── CLASS-ER.md       # Class & ER diagram syntax
-│   └── OTHER-TYPES.md    # State, Gantt, Git, Pie, Mindmap, C4
+│   ├── FLOWCHART.md      # 流程图语法和示例
+│   ├── SEQUENCE.md       # 时序图语法
+│   ├── CLASS-ER.md       # 类图和 ER 图语法
+│   └── OTHER-TYPES.md    # 状态图、甘特图、Git图、饼图、思维导图、C4
 ├── assets/
-│   ├── example.mmd       # Example: microservices architecture
+│   ├── example.mmd       # 示例：微服务架构
 │   ├── example.png
-│   ├── workflow.mmd      # Example: workflow (English)
+│   ├── workflow.mmd      # 示例：工作流（英文）
 │   ├── workflow.png
-│   ├── workflow_cn.mmd   # Example: workflow (Chinese)
+│   ├── workflow_cn.mmd   # 示例：工作流（中文）
 │   └── workflow_cn.png
-├── README.md
-└── README_CN.md
+├── README.md             # 中文文档（默认）
+└── README_EN.md          # 英文文档
 ```
 
-## Support
+## 支持作者
 
-If this skill helps you, consider supporting the author:
+如果这个技能对你有帮助，欢迎支持作者：
 
 <table>
   <tr>
     <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/wechat-pay.png" width="180" alt="WeChat Pay">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/wechat-pay.png" width="180" alt="微信支付">
       <br>
-      <b>WeChat Pay</b>
+      <b>微信支付</b>
     </td>
     <td align="center">
-      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/alipay.png" width="180" alt="Alipay">
+      <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/alipay.png" width="180" alt="支付宝">
       <br>
-      <b>Alipay</b>
+      <b>支付宝</b>
     </td>
     <td align="center">
       <img src="https://raw.githubusercontent.com/Agents365-ai/images_payment/main/qrcode/buymeacoffee.png" width="180" alt="Buy Me a Coffee">
@@ -196,11 +192,11 @@ If this skill helps you, consider supporting the author:
   </tr>
 </table>
 
-## License
+## 许可证
 
 MIT
 
-## Author
+## 作者
 
 **Agents365-ai**
 
