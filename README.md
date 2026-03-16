@@ -57,15 +57,22 @@
 
 ### 1. 安装技能
 
+**Claude Code（全局）：**
 ```bash
-# 克隆到 Claude Code 技能目录
 git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git ~/.claude/skills/creating-mermaid-diagrams
 ```
 
-或者用于特定项目：
+**Claude Code（仅当前项目）：**
 ```bash
 git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/skills/creating-mermaid-diagrams
 ```
+
+**OpenClaw：**
+```bash
+git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git skills/creating-mermaid-diagrams
+```
+
+**SkillsMP：** 在 [skillsmp.com](https://skillsmp.com) 搜索 `mermaid`，一键安装。
 
 ### 2. 安装依赖
 

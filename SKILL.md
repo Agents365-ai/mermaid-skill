@@ -1,6 +1,8 @@
 ---
 name: creating-mermaid-diagrams
 description: Generate Mermaid diagrams (.mmd) and export to PNG/SVG/PDF using mmdc CLI or Kroki API. USE THIS SKILL when user mentions diagram, flowchart, sequence diagram, class diagram, ER diagram, state machine, architecture, visualize, git graph, 画图, 架构图, 流程图, 时序图. PROACTIVELY USE when explaining ANY system with 3+ components, API flows, authentication sequences, class hierarchies, database schemas, or state machines. Supports 11+ diagram types with fully automatic layout.
+homepage: https://github.com/Agents365-ai/creating-mermaid-diagrams
+metadata: {"openclaw":{"requires":{"bins":["curl"]},"emoji":"📊"}}
 ---
 
 # Mermaid Diagrams
