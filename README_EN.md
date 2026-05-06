@@ -57,22 +57,22 @@ The skill activates when you:
 
 ### 1. Install the Skill
 
-**Claude Code (global):**
 ```bash
-git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git ~/.claude/skills/creating-mermaid-diagrams
+# Any agent (Claude Code, Cursor, Copilot, etc.)
+npx skills add Agents365-ai/365-skills -g
+
+# Claude Code only
+> /plugin marketplace add Agents365-ai/365-skills
+> /plugin install mermaid
 ```
 
-**Claude Code (project-specific):**
+Manual install — clone into your agent's skills directory:
+
 ```bash
-git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/skills/creating-mermaid-diagrams
+git clone https://github.com/Agents365-ai/mermaid-skill.git ~/.claude/skills/mermaid-skill
 ```
 
-**OpenClaw:**
-```bash
-git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git skills/creating-mermaid-diagrams
-```
-
-**SkillsMP:** Search `mermaid` on [skillsmp.com](https://skillsmp.com) for one-click install.
+Common paths: `~/.claude/skills/` (Claude Code), `~/.config/opencode/skills/` (Opencode), `~/.openclaw/skills/` (OpenClaw), `~/.agents/skills/` (Codex). Also indexed on [SkillsMP](https://skillsmp.com).
 
 ### 2. Install Dependencies
 

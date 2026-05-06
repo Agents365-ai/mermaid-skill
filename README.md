@@ -57,28 +57,22 @@
 
 ### 1. 安装技能
 
-**Claude Code（推荐，插件市场）：**
 ```bash
-/plugin marketplace add Agents365-ai/365-skills
-/plugin install mermaid
+# 任意 Agent（Claude Code、Cursor、Copilot 等）
+npx skills add Agents365-ai/365-skills -g
+
+# 仅 Claude Code
+> /plugin marketplace add Agents365-ai/365-skills
+> /plugin install mermaid
 ```
 
-**Claude Code（手动全局）：**
+手动安装 —— 克隆到你的 Agent skills 目录：
+
 ```bash
 git clone https://github.com/Agents365-ai/mermaid-skill.git ~/.claude/skills/mermaid-skill
 ```
 
-**Claude Code（仅当前项目）：**
-```bash
-git clone https://github.com/Agents365-ai/mermaid-skill.git .claude/skills/mermaid-skill
-```
-
-**OpenClaw：**
-```bash
-git clone https://github.com/Agents365-ai/mermaid-skill.git skills/mermaid-skill
-```
-
-**SkillsMP：** 在 [skillsmp.com](https://skillsmp.com) 搜索 `mermaid`，一键安装。
+常用路径：`~/.claude/skills/`（Claude Code）、`~/.config/opencode/skills/`（Opencode）、`~/.openclaw/skills/`（OpenClaw）、`~/.agents/skills/`（Codex）。同时已索引于 [skillsmp.com](https://skillsmp.com)。
 
 ### 2. 安装依赖
 
