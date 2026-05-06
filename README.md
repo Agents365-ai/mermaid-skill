@@ -57,19 +57,25 @@
 
 ### 1. 安装技能
 
-**Claude Code（全局）：**
+**Claude Code（推荐，插件市场）：**
 ```bash
-git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git ~/.claude/skills/creating-mermaid-diagrams
+/plugin marketplace add Agents365-ai/365-skills
+/plugin install mermaid
+```
+
+**Claude Code（手动全局）：**
+```bash
+git clone https://github.com/Agents365-ai/mermaid-skill.git ~/.claude/skills/mermaid-skill
 ```
 
 **Claude Code（仅当前项目）：**
 ```bash
-git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git .claude/skills/creating-mermaid-diagrams
+git clone https://github.com/Agents365-ai/mermaid-skill.git .claude/skills/mermaid-skill
 ```
 
 **OpenClaw：**
 ```bash
-git clone https://github.com/Agents365-ai/creating-mermaid-diagrams.git skills/creating-mermaid-diagrams
+git clone https://github.com/Agents365-ai/mermaid-skill.git skills/mermaid-skill
 ```
 
 **SkillsMP：** 在 [skillsmp.com](https://skillsmp.com) 搜索 `mermaid`，一键安装。
@@ -157,7 +163,7 @@ flowchart TD
 ## 文件结构
 
 ```
-creating-mermaid-diagrams/
+mermaid-skill/
 ├── SKILL.md              # 主技能说明
 ├── reference/
 │   ├── FLOWCHART.md      # 流程图语法和示例
